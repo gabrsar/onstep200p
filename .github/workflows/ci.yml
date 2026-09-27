@@ -1,0 +1,62 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    name: Quality and host tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Install host tools
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: Public-file and documentation checks
+        run: make quality
+      - name: Host and protocol regression tests
+        run: make test
+      - name: Shell syntax
+        run: bash -n scripts/*.sh
+  firmware:
+    name: Firmware (${{ matrix.profile }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: default
+            options: SPEAKER=passive DISPLAY=on WIFI=on
+          - profile: minimal
+            options: SPEAKER=off DISPLAY=off WIFI=off
+    env:
+      ONSTEP_PUBLIC_BUILD: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: arduino/setup-arduino-cli@81d310742121c928ea9c8bbd407b4217b432ae02 # v2.0.0
+        with:
+          version: '1.5.1'
+      - name: Install host tools
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: Install pinned embedded dependencies
+        run: make setup
+      - name: Compile credential-free development firmware
+        run: make compile ${{ matrix.options }}
+      - name: Verify firmware checksum
+        working-directory: build/onstepx
+        run: sha256sum -c OnStepX.ino.bin.sha256
+      # No automatic releases or local firmware uploads. Hardware commissioning
+      # and a deliberate release review are required before distributing binaries.

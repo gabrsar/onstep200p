@@ -1,0 +1,32 @@
+name: Bug report
+description: Report firmware, UI or protocol behavior
+body:
+  - type: markdown
+    attributes:
+      value: "Remove Wi-Fi passwords, personal network names, coordinates and device identifiers from logs. Report security issues privately."
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Firmware version / binary hash
+      description: From the boot screen or GXPV; not a device identifier.
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware and app
+      description: Board, drivers, display, wiring differences, connected motors, app/version and operating system.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Minimal redacted log or screenshot

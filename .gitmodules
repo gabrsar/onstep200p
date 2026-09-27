@@ -1,0 +1,3 @@
+[submodule "vendor/OnStepX"]
+	path = vendor/OnStepX
+	url = https://github.com/hjd1964/OnStepX.git
