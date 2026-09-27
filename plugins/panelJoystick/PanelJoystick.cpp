@@ -162,8 +162,8 @@ void PanelJoystick::loop() {
     return;
   }
   if (uiControl) {
-    const int8_t direction = pageGesture.update(normalizedX,normalizedY,millis(),persisted?1:700,persisted?0:450);
     #if ONSTEP200P_DISPLAY == ON
+      const int8_t direction = pageGesture.update(normalizedX,normalizedY,millis(),persisted?1:700,persisted?0:450);
       if (direction) panelDisplay.navigate(direction);
     #endif
     return;
