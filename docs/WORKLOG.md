@@ -15,4 +15,20 @@ session history, credentials, personal network identifiers or observing sites.
   workflow lint and secret-history scanning with read-only PR permissions.
 - No new firmware was uploaded to physical hardware during repository setup.
 
-Verification and GitHub configuration outcomes are recorded after CI completes.
+Verification and configuration:
+
+- Local host regressions and the default/minimal embedded profiles compiled.
+- Public-file audit, known-private-value comparison, Gitleaks history scan,
+  Actionlint and local documentation checks passed.
+- Initial GitHub CI passed all three checks: quality, default and minimal.
+- Public repository uses a fresh history and a GitHub noreply commit address.
+- Main requires PR/checks and resolved conversations; force pushes/deletion
+  are blocked. Maintainer review is requested by CODEOWNERS, with no mandatory
+  second reviewer for this single-maintainer project.
+- Secret scanning, push protection, private vulnerability reports and
+  Dependabot security updates are enabled. PR tokens remain read-only.
+- PR2 removes a display-disabled compiler warning and updates checkout to a
+  Node24 action. Arduino CLI is installed directly from its pinned release,
+  with checksum verification, removing the old Node20 setup action.
+- OLED preview artwork was inspected in a browser; fixtures are synthetic.
+- Firmware on physical hardware was not changed by repository preparation.
