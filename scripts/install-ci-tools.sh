@@ -24,5 +24,13 @@ install_tool() {
   tar -xzf "$temp_dir/archive.tar.gz" -C "$target" "$binary"
 }
 
-install_tool rhysd/actionlint 1.7.12 actionlint_1.7.12_linux_amd64.tar.gz actionlint_1.7.12_checksums.txt actionlint
-install_tool gitleaks/gitleaks 8.30.1 gitleaks_8.30.1_linux_x64.tar.gz gitleaks_8.30.1_checksums.txt gitleaks
+case "${1:-quality}" in
+  quality)
+    install_tool rhysd/actionlint 1.7.12 actionlint_1.7.12_linux_amd64.tar.gz actionlint_1.7.12_checksums.txt actionlint
+    install_tool gitleaks/gitleaks 8.30.1 gitleaks_8.30.1_linux_x64.tar.gz gitleaks_8.30.1_checksums.txt gitleaks
+    ;;
+  firmware)
+    install_tool arduino/arduino-cli 1.5.1 arduino-cli_1.5.1_Linux_64bit.tar.gz 1.5.1-checksums.txt arduino-cli
+    ;;
+  *) echo "Usage: $0 [quality|firmware]" >&2; exit 2;;
+esac
